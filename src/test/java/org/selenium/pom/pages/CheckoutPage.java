@@ -1,17 +1,12 @@
 package org.selenium.pom.pages;
 
-import com.fasterxml.jackson.databind.util.ExceptionUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.selenium.pom.base.BasePage;
 import org.selenium.pom.objects.BillingAddress;
-
-import java.time.Duration;
-import java.util.List;
 
 public class CheckoutPage extends BasePage {
 
@@ -34,7 +29,6 @@ public class CheckoutPage extends BasePage {
 
     private final By directBankTransferRadioBtn = By.id("payment_method_bacs");
 
-
     private final By overlay = By.cssSelector(".blockUI.blockOverlay");
 
 
@@ -55,7 +49,7 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
-    public CheckoutPage selectCountry(String countryName) {
+    public CheckoutPage selectCountry(String countryName) throws InterruptedException {
         Select select = new Select(driver.findElement(countryDropDown));
         select.selectByVisibleText(countryName);
         return this;
@@ -85,13 +79,13 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
-    public CheckoutPage enterMail (String email) {
+    public CheckoutPage enterMail(String email) {
         driver.findElement(billingEmailFld).clear();
         driver.findElement(billingEmailFld).sendKeys(email);
         return this;
     }
 
-    public CheckoutPage setBillingAddress(BillingAddress billingAddress) {
+    public CheckoutPage setBillingAddress(BillingAddress billingAddress) throws InterruptedException {
         return enterFirstName(billingAddress.getFirstName()).
                 enterLastName(billingAddress.getLastName()).
                 selectCountry(billingAddress.getCountry()).
@@ -147,7 +141,6 @@ public class CheckoutPage extends BasePage {
         }
         return this;
     }
-
 
 
 }
