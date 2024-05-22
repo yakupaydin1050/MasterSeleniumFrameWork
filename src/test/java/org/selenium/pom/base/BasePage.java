@@ -51,9 +51,6 @@ public class BasePage {
 }
 
 
-
-
-
 // this is coming from a Selenium Conference! not Udemy!
 /*    @Test
     public void howToUserPageFactories() {

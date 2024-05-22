@@ -14,8 +14,6 @@ public class ConfigLoader {
             case STAGE -> properties = PropertyUtils.propertyLoader("src/test/resources/stg_config.properties");
             case PRODUCTION -> properties = PropertyUtils.propertyLoader("src/test/resources/prod_config.properties");
             default -> throw new IllegalStateException("Invalid env type: " + env);
-
-
         }
 
     }

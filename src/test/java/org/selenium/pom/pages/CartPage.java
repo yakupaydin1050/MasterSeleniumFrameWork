@@ -35,4 +35,9 @@ public class CartPage extends BasePage {
         waitLong.until(ExpectedConditions.elementToBeClickable(checkoutBtn)).click();
         return new CheckoutPage(driver);
     }
+
+    public void deleteLater() {
+        driver.findElements(By.id(""));
+    }
+
 }

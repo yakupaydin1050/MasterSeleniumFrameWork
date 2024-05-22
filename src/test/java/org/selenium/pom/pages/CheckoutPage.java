@@ -1,12 +1,14 @@
 package org.selenium.pom.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.selenium.pom.base.BasePage;
 import org.selenium.pom.objects.BillingAddress;
+import org.selenium.pom.objects.User;
 
 public class CheckoutPage extends BasePage {
 
@@ -31,9 +33,16 @@ public class CheckoutPage extends BasePage {
 
     private final By overlay = By.cssSelector(".blockUI.blockOverlay");
 
+    private final By productName = By.cssSelector("td[class='product-name']");
+
 
     public CheckoutPage(WebDriver driver) {
         super(driver);
+    }
+
+    public CheckoutPage load() {
+        load("/checkout/");
+        return this;
     }
 
     public CheckoutPage enterFirstName(String firstName) {
@@ -128,11 +137,24 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
+    public CheckoutPage login(User user) {
+        return enterUserName(user.getUsername()).
+                enterPassword(user.getPassword()).
+                clickLoginBtn();
+    }
+
+    private CheckoutPage waitForLoginBtnToDisappear() {
+        waitLong.until(ExpectedConditions.invisibilityOfElementLocated(loginBtn));
+        return this;
+    }
+
     public CheckoutPage login(String userName, String password) {
         return enterUserName(userName).
                 enterPassword(password).
-                clickLoginBtn();
+                clickLoginBtn().waitForLoginBtnToDisappear();
+//        waitForLoginBtnToDisappear().clickLoginBtn();
     }
+
 
     public CheckoutPage selectDirectBankTransfer() {
         WebElement e = waitLong.until(ExpectedConditions.elementToBeClickable(directBankTransferRadioBtn));
@@ -142,5 +164,19 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
+    public String getProductName() throws Exception {
+//        waitLong.until(ExpectedConditions.stalenessOf());
+        int i = 5;
+        while (i > 0) {
+            try {
+                return waitLong.until(ExpectedConditions.visibilityOfElementLocated(productName)).getText();
+            } catch (StaleElementReferenceException e) {
+                System.out.println("NOT FOUND, TRYING AGAIN " + e );
+            }
+            Thread.sleep(5000);
+            i--;
+        }
+        throw new Exception("Element not found");
+    }
 
 }

@@ -26,10 +26,6 @@ public class BillingAddress {
         this.state = state;
     }
 
-
-
-
-
     public BillingAddress() {
 
     }

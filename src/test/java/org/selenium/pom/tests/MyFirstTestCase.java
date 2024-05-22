@@ -38,12 +38,12 @@ public class MyFirstTestCase extends BaseTest {
 
         StorePage storePage = new HomePage(getDriver()).
                 load().
-                navigateToStoreUsingMenu().
+                getMyHeader().navigateToStoreUsingMenu().
                 search(searchFor);
         Assert.assertTrue(storePage.getTitle().contains("Search results"));
 
-        storePage.clickAddToCartBtn(product.getName());
-        CartPage cartPage = storePage.clickViewCart();
+        storePage.getProductThumbnail().clickAddToCartBtn(product.getName());
+        CartPage cartPage = storePage.getProductThumbnail().clickViewCart();
         cartPage.isLoaded();
         Assert.assertEquals(cartPage.getProductName(), product.getName());
 
@@ -62,19 +62,19 @@ public class MyFirstTestCase extends BaseTest {
         String searchFor = "Blue";
         BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
         Product product = new Product(1215);
-        User user = new User(ConfigLoader.getInstance().getUsername(),
+        User user = new User(ConfigLoader.getInstance().getUsername(), billingAddress.getEmail(),
                 ConfigLoader.getInstance().getPassword());
 
         StorePage storePage = new HomePage(getDriver()).
                 load().
-                navigateToStoreUsingMenu().
+                getMyHeader().navigateToStoreUsingMenu().
                 search(searchFor);
 
         Assert.assertTrue(storePage.getTitle().contains("Search results"));
 
-        storePage.clickAddToCartBtn("Blue Shoes");
+        storePage.getProductThumbnail().clickAddToCartBtn("Blue Shoes");
 
-        CartPage cartPage = storePage.clickViewCart();
+        CartPage cartPage = storePage.getProductThumbnail().clickViewCart();
         Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
 
         CheckoutPage checkoutPage = cartPage.checkout();
